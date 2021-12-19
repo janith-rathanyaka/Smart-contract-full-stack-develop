@@ -65,6 +65,7 @@ class App extends Component {
     } else {
       window.alert("Error rather contract not deployed - no detected network!");
     }
+    this.setState({loading:false})
   }
 
   constructor(props) {
@@ -84,7 +85,7 @@ class App extends Component {
     return (
       <div>
         <Navbar account={this.state.account} />
-        <div className="text-center"></div>
+        <div className="container-fluid mt-5"></div>
       </div>
     );
   }
