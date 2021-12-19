@@ -99,6 +99,12 @@ contract("DecentralBank", ([owner, customer]) => {
 
         // Ensure Only the owner
         await decentralBank.issueTokens({ from: customer }).should.be.rejected;
+
+        // Unstake Tokens
+    //    await decentralBank.unstakeTokens({from: customer})
+
+        // check unstake balance
+    //    await decentralBank.unstakeTokens({from: customer})
       });
     });
   });
