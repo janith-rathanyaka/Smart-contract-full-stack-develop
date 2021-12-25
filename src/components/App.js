@@ -4,7 +4,7 @@ import Web3 from "web3";
 import Tether from "../truffle_abis/Tether.json";
 import RWD from "../truffle_abis/RWD.json";
 import DecentralBank from "../truffle_abis/DecentralBank.json";
-
+import Main from './Main';
 class App extends Component {
   async componentWillMount() {
     await this.loadWeb3();
@@ -37,7 +37,7 @@ class App extends Component {
         .balanceOf(this.state.account)
         .call();
       this.setState({ tetherBalance: tetherBalance.toString() });
-    //  console.log({ tetherBalance: tetherBalance });
+      //  console.log({ tetherBalance: tetherBalance });
     } else {
       window.alert("Error rather contract not deployed - no detected network!");
     }
@@ -49,7 +49,7 @@ class App extends Component {
       this.setState({ rwd });
       let rwdBalance = await rwd.methods.balanceOf(this.state.account).call();
       this.setState({ rwdBalance: rwdBalance.toString() });
-    //  console.log({ rwdBalance: rwdBalance });
+      //  console.log({ rwdBalance: rwdBalance });
     } else {
       window.alert("Error rather contract not deployed - no detected network!");
     }
@@ -57,15 +57,20 @@ class App extends Component {
     // load Decentralbank Contract
     const decentralBankData = DecentralBank.networks[networkId];
     if (rwdData) {
-      const decentralBank = new web3.eth.Contract(DecentralBank.abi, decentralBankData.address);
+      const decentralBank = new web3.eth.Contract(
+        DecentralBank.abi,
+        decentralBankData.address
+      );
       this.setState({ decentralBank });
-      let stakingBalance = await decentralBank.methods.stakingBalance(this.state.account).call();
+      let stakingBalance = await decentralBank.methods
+        .stakingBalance(this.state.account)
+        .call();
       this.setState({ stakingBalance: stakingBalance.toString() });
-    //  console.log({ stakingBalance: stakingBalance });
+      //  console.log({ stakingBalance: stakingBalance });
     } else {
       window.alert("Error rather contract not deployed - no detected network!");
     }
-    this.setState({loading:false})
+    this.setState({ loading: false });
   }
 
   constructor(props) {
@@ -85,7 +90,15 @@ class App extends Component {
     return (
       <div>
         <Navbar account={this.state.account} />
-        <div className="container-fluid mt-5"></div>
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <main role='main' className="col-lg-12 ml-auto mr-auto" style={{maxWidth:'600px',maxWeight:'100vm'}}>
+               <div>
+                <Main />
+               </div>
+            </main>
+          </div>
+        </div>
       </div>
     );
   }
