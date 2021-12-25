@@ -72,6 +72,37 @@ class App extends Component {
     }
     this.setState({ loading: false });
   }
+  // two function one that stakes and one that un-stakes
+  //leverage  our decentralBank contracts - deposit tokens and un-stakes
+  //deposit Tokens transferFrom
+  //All of this is for the staking
+  // function approve transaction hash ----
+  //STAKING FUNCTION ?? >> decentalBank.depositTokens(send transaction =>)
+
+  stakeTokens = (amount) => {
+    this.setState({ loading: true });
+    this.state.tether.methods
+      .approve(this.state.decentralBank._address, amount)
+      .send({ from: this.state.account })
+      .on("transitionHash", (hash) => {
+        this.state.decentralBank.methods
+          .depositTokens(amount)
+          .send({ from: this.state.account })
+          .on("transitionHash", (hash) => {
+            this.setState({ loading: false });
+          });
+      });
+  };
+
+  unstakeTokens = () => {
+    this.setState({ loading: true });
+    this.state.decentralBank.methods
+      .unstakeTokens()
+      .send({ from: this.state.account })
+      .on("transitionHash", (hash) => {
+        this.setState({ loading: true });
+      });
+  };
 
   constructor(props) {
     super(props);
@@ -96,11 +127,15 @@ class App extends Component {
               LOADING PLEASE...
             </p>
           ))
-        : (content = <Main
-          tetherBalance={this.state.tetherBalance}
-          rwdBalance = {this.state.rwdBalance}
-          stakingBalance = {this.state.stakingBalance}
-          />);
+        : (content = (
+            <Main
+              tetherBalance={this.state.tetherBalance}
+              rwdBalance={this.state.rwdBalance}
+              stakingBalance={this.state.stakingBalance}
+              stakeTokens={this.stakeTokens}
+              unstakeTokens={this.unstakeTokens}
+            />
+          ));
     }
     return (
       <div>
@@ -112,9 +147,7 @@ class App extends Component {
               className="col-lg-12 ml-auto mr-auto"
               style={{ maxWidth: "600px", maxWeight: "100vm" }}
             >
-              <div>
-                {content}
-              </div>
+              <div>{content}</div>
             </main>
           </div>
         </div>
