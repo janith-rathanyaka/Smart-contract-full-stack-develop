@@ -67,7 +67,14 @@ class Main extends Component {
               </button>
             </div>
           </form>
-          <button className="btn btn-primary btn-lg btn-block">WITHDRAW</button>
+          <button
+          type='submit'
+          onClick={(event) =>{
+            event.preventDefault(
+            this.props.unstakeTokens()
+            )
+          }}
+          className="btn btn-primary btn-lg btn-block">WITHDRAW</button>
           <div className="card-body text-center" style={{ color: "blue" }}>
             AIRDROP
           </div>
